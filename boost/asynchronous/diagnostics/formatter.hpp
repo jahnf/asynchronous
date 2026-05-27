@@ -49,7 +49,10 @@ public:
 
     std::string format()
     {
-        return formatter.format();
+        auto res = formatter.format();
+        // now is a good time to clear schedulers
+        clear_schedulers();
+        return res;
     }
 
     template <typename Func>

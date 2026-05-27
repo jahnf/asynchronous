@@ -165,9 +165,6 @@ BOOST_AUTO_TEST_CASE(test_html_diagnostics_call)
         // Output intermediate statistics
         auto formatted = boost::asynchronous::recursive_future_get(formatter.format());
 
-        // Clear schedulers
-        formatter.clear_schedulers();
-
         BOOST_CHECK_MESSAGE(!formatted.empty(), "no html diagnostics");
 
     }

@@ -154,9 +154,6 @@ void test_html_diagnostics(int argc, char *argv[])
 
         std::ofstream(argv[2]) << formatter.format().get() << std::endl;
 
-        // Clear schedulers
-        formatter.clear_schedulers();
-
         // Wait for the task to finish
         std::future<void> resfu = fu.get();
         resfu.get();
