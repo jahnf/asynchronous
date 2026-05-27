@@ -63,16 +63,41 @@ struct local_subscription
         }
     }
 
+    bool handle_waiting_internal_subscribes()
+    {
+        bool have_waiting = !m_waiting_internal_subscribes.empty();
+        // waiting subscribes
+        for (auto& f : m_waiting_internal_subscribes)
+        {
+            f();
+        }
+        m_waiting_internal_subscribes.clear();
+        // if we had waiting, we will need to publish again
+        return have_waiting;
+    }
     template <class Sub>
     void subscribe(Sub&& sub, std::int64_t token, Topic const& topic)
     {
-        m_internal_subscribers.insert_or_assign(token, std::make_tuple(std::forward<Sub>(sub),topic, false));
+        if (m_publish_counter > 0)
+        {
+            // enqueue and execute later
+            m_waiting_internal_subscribes.emplace_back(
+                [this, sub = std::forward<Sub>(sub), topic, token]()mutable
+                {
+                    m_internal_subscribers.insert_or_assign(token, std::make_tuple(std::forward<Sub>(sub), topic, false));
+                }
+            );
+        }
+        else
+        {
+            // immediate
+            m_internal_subscribers.insert_or_assign(token, std::make_tuple(std::forward<Sub>(sub), topic, false));
+        }
     }
 
     template <class Sub>
     void subscribe_scheduler(Sub&& sub, boost::uuids::uuid scheduler_id, Topic const& topic)
     {
-        // do not register double entries
         auto it = std::find_if(m_scheduler_subscribers.begin(), m_scheduler_subscribers.end(),
             [&](const auto& s)
             {
@@ -176,7 +201,7 @@ struct local_subscription
     }
 
     template <class Ev>
-    bool publish_internal(Ev&& e, Topic const& other_topic)
+    bool publish_internal(Ev&& e, Topic const& other_topic, bool cleanup_after=true)
     {
         ++m_publish_counter;
         bool someone_handled = false;
@@ -206,8 +231,15 @@ struct local_subscription
         --m_publish_counter;
         if(m_publish_counter == 0)
         {
-            // now we can safely cleanup
-            cleanup_subscriber();
+            if (handle_waiting_internal_subscribes())
+            {
+                publish_internal(std::forward<Ev>(e), other_topic, false);
+            }
+            if (cleanup_after)
+            {
+                // now we can safely cleanup
+                cleanup_subscriber();
+            }
         }
 
 
@@ -219,6 +251,8 @@ struct local_subscription
     std::vector<scheduler_subscriber_t>                                 m_scheduler_subscribers;
     // in order not to invalidate iterators during publish, remember deleted ids and cleanup later
     std::vector< std::tuple<boost::uuids::uuid, std::optional<Topic>>>  m_deleted_scheduler_subscribers;
+    // same for subscribes during a publish callback is called
+    std::vector<std::function<void()>>                                  m_waiting_internal_subscribes;
 };
 
 // inline thread local subscriptions
