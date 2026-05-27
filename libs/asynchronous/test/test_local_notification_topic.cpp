@@ -8,6 +8,8 @@
 //
 // For more information, see http://www.boost.org
 
+#include <utility>
+
 #include <boost/asynchronous/scheduler/single_thread_scheduler.hpp>
 #include <boost/asynchronous/queue/guarded_deque.hpp>
 #include <boost/asynchronous/scheduler_shared_proxy.hpp>
@@ -106,7 +108,7 @@ BOOST_AUTO_TEST_CASE( test_local_notification_topic_match )
         try
         {
             auto fu = proxy.wait_for_some_event("topics");
-            proxy.trigger("topics/topic1");
+            std::ignore = proxy.trigger("topics/topic1");
             auto res = boost::asynchronous::recursive_future_get(std::move(fu));
             BOOST_CHECK_MESSAGE(std::get<int>(res) == 42, "invalid result");
             BOOST_CHECK_MESSAGE(std::get<std::string>(res) == "topics/topic1", "invalid result");
@@ -147,7 +149,7 @@ BOOST_AUTO_TEST_CASE(test_local_notification_topic_no_match)
         try
         {
             auto fu = proxy.wait_for_some_event("topic1");
-            proxy.trigger("topic2");
+            std::ignore = proxy.trigger("topic2");
             BOOST_CHECK_MESSAGE(proxy.cb_called().get() == 0, "got wrong number of events");
         }
         catch (...)
@@ -185,7 +187,7 @@ BOOST_AUTO_TEST_CASE(test_local_notification_topic_match_no_match)
         {
             auto fu = proxy.wait_for_some_event("topic1");
             auto fu2 = proxy.wait_for_some_event("topic2");
-            proxy.trigger("topic2");
+            std::ignore = proxy.trigger("topic2");
 
             auto res = boost::asynchronous::recursive_future_get(std::move(fu2));
             BOOST_CHECK_MESSAGE(std::get<int>(res) == 42, "invalid result");

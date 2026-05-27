@@ -43,6 +43,8 @@
 #include <boost/type_traits/has_trivial_constructor.hpp>
 #include <boost/mpl/has_xxx.hpp>
 #include <boost/preprocessor/facilities/overload.hpp>
+#include <boost/config.hpp>
+
 
 #include <boost/asynchronous/callable_any.hpp>
 #include <boost/asynchronous/post.hpp>
@@ -128,7 +130,7 @@ BOOST_MPL_HAS_XXX_TRAIT_DEF(servant_type)
 #else
 #define BOOST_ASYNC_FUTURE_MEMBER_LOG_2(funcname,taskname)                                                                                                  \
     template <typename... Args>                                                                                                                             \
-    auto funcname(Args... args)const                                                                                                                        \
+    BOOST_ATTRIBUTE_NODISCARD auto funcname(Args... args)const                                                                                                                        \
     {                                                                                                                                                       \
         auto servant = this->m_servant;                                                                                                                     \
         std::size_t prio = 100000 * this->m_offset_id;                                                                                                      \
@@ -156,7 +158,7 @@ BOOST_MPL_HAS_XXX_TRAIT_DEF(servant_type)
 #else
 #define BOOST_ASYNC_FUTURE_MEMBER_LOG_3(funcname,taskname,prio)                                                                                         \
     template <typename... Args>                                                                                                                         \
-    auto funcname(Args... args)const                                                                                                                    \
+    BOOST_ATTRIBUTE_NODISCARD auto funcname(Args... args)const                                                                                                                    \
     {                                                                                                                                                   \
         auto servant = this->m_servant;                                                                                                                 \
         std::size_t p = prio + 100000 * this->m_offset_id;                                                                                              \
@@ -186,7 +188,7 @@ BOOST_MPL_HAS_XXX_TRAIT_DEF(servant_type)
 #else
 #define BOOST_ASYNC_FUTURE_MEMBER_1(funcname)                                                                                                           \
     template <typename... Args>                                                                                                                         \
-    auto funcname(Args... args)const                                                                                                                    \
+    BOOST_ATTRIBUTE_NODISCARD auto funcname(Args... args)const                                                                                                                    \
     {                                                                                                                                                   \
         auto servant = this->m_servant;                                                                                                                 \
         std::size_t prio = 100000 * this->m_offset_id;                                                                                                  \
@@ -214,7 +216,7 @@ BOOST_MPL_HAS_XXX_TRAIT_DEF(servant_type)
 #else
 #define BOOST_ASYNC_FUTURE_MEMBER_2(funcname,prio)                                                                                                      \
     template <typename... Args>                                                                                                                         \
-    auto funcname(Args... args)const                                                                                                                    \
+    BOOST_ATTRIBUTE_NODISCARD auto funcname(Args... args)const                                                                                                                    \
     {                                                                                                                                                   \
         auto servant = this->m_servant;                                                                                                                 \
         std::size_t p = prio + 100000 * this->m_offset_id;                                                                                              \

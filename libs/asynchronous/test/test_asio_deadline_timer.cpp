@@ -1,4 +1,6 @@
 #include <iostream>
+#include <utility>
+
 #include <boost/asynchronous/scheduler/single_thread_scheduler.hpp>
 #include <boost/asynchronous/extensions/asio/asio_scheduler.hpp>
 #include <boost/asynchronous/queue/lockfree_queue.hpp>
@@ -157,7 +159,7 @@ BOOST_AUTO_TEST_CASE( test_asio_timer_expired )
     ServantProxy proxy(scheduler);
     std::shared_ptr<boost::promise<void> > p(new boost::promise<void>);
     auto fu = p->get_future();
-    proxy.timer_expired(p);
+    std::ignore = proxy.timer_expired(p);
     fu.get();
     BOOST_CHECK_MESSAGE(timer_expired_count==1,"timer callback not called.");
     timer_expired_count=0;
@@ -172,13 +174,13 @@ BOOST_AUTO_TEST_CASE( test_asio_timer_expired_twice )
     ServantProxy proxy(scheduler);
     std::shared_ptr<boost::promise<void> > p(new boost::promise<void>);
     auto fu = p->get_future();
-    proxy.timer_expired2(p);
+    std::ignore = proxy.timer_expired2(p);
     fu.get();
     BOOST_CHECK_MESSAGE(timer_expired_count==1,"timer callback not called.");
 
     std::shared_ptr<boost::promise<void> > p2(new boost::promise<void>);
     auto fu2 = p2->get_future();
-    proxy.timer_expired2(p2);
+    std::ignore = proxy.timer_expired2(p2);
     fu2.get();
     BOOST_CHECK_MESSAGE(timer_expired_count==2,"timer callback not called twice.");
     timer_expired_count=0;
@@ -192,13 +194,13 @@ BOOST_AUTO_TEST_CASE( test_asio_timer_expired_twice_bis )
     ServantProxy proxy(scheduler);
     std::shared_ptr<boost::promise<void> > p(new boost::promise<void>);
     auto fu = p->get_future();
-    proxy.timer_expired3(p);
+    std::ignore = proxy.timer_expired3(p);
     fu.get();
     BOOST_CHECK_MESSAGE(timer_expired_count==1,"timer callback not called.");
 
     std::shared_ptr<boost::promise<void> > p2(new boost::promise<void>);
     auto fu2 = p2->get_future();
-    proxy.timer_expired3(p2);
+    std::ignore = proxy.timer_expired3(p2);
     fu2.get();
     BOOST_CHECK_MESSAGE(timer_expired_count==2,"timer callback not called twice.");
 }
