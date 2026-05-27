@@ -45,6 +45,11 @@ namespace boost { namespace asynchronous { namespace subscription
         {
         }
 
+        notification_servant(boost::asynchronous::any_weak_scheduler<Callable> scheduler)
+            : boost::asynchronous::trackable_servant<Callable, Callable>(scheduler)
+        {
+        }
+
         void add_scheduler(std::vector<boost::thread::id> sched_thread_ids, 
                            std::function<void(std::function<void()>)> exec_in_sched,
                            std::function<void(std::vector< std::function<void(std::function<void()>)>>)> notify_me_for_new_schedulers)
@@ -88,6 +93,11 @@ namespace boost { namespace asynchronous { namespace subscription
         notification_proxy(Scheduler s, Threadpool p) :
             boost::asynchronous::servant_proxy<notification_proxy<Callable>, notification_servant<Callable>, Callable>(s, p)
         {}
+        template <class Scheduler>
+        notification_proxy(Scheduler s) :
+            boost::asynchronous::servant_proxy<notification_proxy<Callable>, notification_servant<Callable>, Callable>(s)
+        {
+        }
         using servant_type = typename boost::asynchronous::servant_proxy<notification_proxy<Callable>, notification_servant<Callable>, Callable>::servant_type;
         using callable_type = typename boost::asynchronous::servant_proxy<notification_proxy<Callable>, notification_servant<Callable>, Callable>::callable_type;
 

@@ -320,7 +320,7 @@ BOOST_AUTO_TEST_CASE(test_full_notification2_log)
     auto scheduler_notify = boost::asynchronous::make_shared_scheduler_proxy<boost::asynchronous::single_thread_scheduler<
         boost::asynchronous::guarded_deque<servant_job>>>();
     auto notification_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
 
     std::vector<std::future<void>> notification_futures;
     notification_futures.emplace_back(boost::asynchronous::subscription::register_scheduler_to_notification(scheduler2.get_weak_scheduler(), notification_ptr, true));
@@ -358,7 +358,7 @@ BOOST_AUTO_TEST_CASE(test_full_notification_pub_and_sub_log)
     auto scheduler_notify = boost::asynchronous::make_shared_scheduler_proxy<boost::asynchronous::single_thread_scheduler<
         boost::asynchronous::guarded_deque<servant_job>>>();
     auto notification_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
 
 
     std::vector<std::future<void>> notification_futures;
@@ -403,7 +403,7 @@ BOOST_AUTO_TEST_CASE(test_full_notification_multiple_subs_log)
     auto scheduler_notify = boost::asynchronous::make_shared_scheduler_proxy<boost::asynchronous::single_thread_scheduler<
         boost::asynchronous::guarded_deque<servant_job>>>();
     auto notification_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
 
 
     std::vector<std::future<void>> notification_futures;
@@ -447,7 +447,7 @@ BOOST_AUTO_TEST_CASE(test_full_notification_threadpool_log)
     auto scheduler_notify = boost::asynchronous::make_shared_scheduler_proxy<boost::asynchronous::single_thread_scheduler<
         boost::asynchronous::guarded_deque<servant_job>>>();
     auto notification_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
 
 
     std::vector<std::future<void>> notification_futures;
@@ -489,9 +489,9 @@ BOOST_AUTO_TEST_CASE(test_full_notification_multiple_notification_buses_log)
     auto scheduler_notify = boost::asynchronous::make_shared_scheduler_proxy<boost::asynchronous::single_thread_scheduler<
         boost::asynchronous::guarded_deque<servant_job>>>();
     auto notification_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
     auto notification2_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
 
 
     std::vector<std::future<void>> notification_futures;
@@ -539,7 +539,7 @@ BOOST_AUTO_TEST_CASE(test_full_notification_auto_unsubscribe_log)
     auto scheduler_notify = boost::asynchronous::make_shared_scheduler_proxy<boost::asynchronous::single_thread_scheduler<
         boost::asynchronous::guarded_deque<servant_job>>>();
     auto notification_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
 
     std::vector<std::future<void>> notification_futures;
     notification_futures.emplace_back(boost::asynchronous::subscription::register_scheduler_to_notification(scheduler1.get_weak_scheduler(), notification_ptr, true));
@@ -596,7 +596,7 @@ BOOST_AUTO_TEST_CASE(test_full_notification_delayed_log)
     auto scheduler_notify = boost::asynchronous::make_shared_scheduler_proxy<boost::asynchronous::single_thread_scheduler<
         boost::asynchronous::guarded_deque<servant_job>>>();
     auto notification_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
 
    boost::asynchronous::subscription::register_scheduler_to_notification(scheduler2.get_weak_scheduler(), notification_ptr).get();
 
@@ -671,7 +671,7 @@ BOOST_AUTO_TEST_CASE(test_full_notification_exact_topic_match_log)
     auto scheduler_notify = boost::asynchronous::make_shared_scheduler_proxy<boost::asynchronous::single_thread_scheduler<
         boost::asynchronous::guarded_deque<servant_job>>>();
     auto notification_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
 
     std::vector<std::future<void>> notification_futures;
     notification_futures.emplace_back(boost::asynchronous::subscription::register_scheduler_to_notification(scheduler1.get_weak_scheduler(), notification_ptr));
@@ -713,7 +713,7 @@ BOOST_AUTO_TEST_CASE(test_full_notification_exact_topic_no_match_log)
     auto scheduler_notify = boost::asynchronous::make_shared_scheduler_proxy<boost::asynchronous::single_thread_scheduler<
         boost::asynchronous::guarded_deque<servant_job>>>();
     auto notification_ptr = std::make_shared<boost::asynchronous::subscription::notification_proxy<servant_job>>
-        (scheduler_notify, pool);
+        (scheduler_notify);
 
     std::vector<std::future<void>> notification_futures;
     notification_futures.emplace_back(boost::asynchronous::subscription::register_scheduler_to_notification(scheduler1.get_weak_scheduler(), notification_ptr));
