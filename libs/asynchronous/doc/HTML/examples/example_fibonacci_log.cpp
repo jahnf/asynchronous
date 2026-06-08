@@ -18,7 +18,7 @@
 namespace
 {
 typedef boost::asynchronous::any_loggable<boost::chrono::high_resolution_clock> servant_job;
-typedef std::map<std::string,std::list<boost::asynchronous::diagnostic_item<boost::chrono::high_resolution_clock> > > diag_type;
+typedef std::map<std::string,std::vector<boost::asynchronous::diagnostic_item<boost::chrono::high_resolution_clock> > > diag_type;
 
 long serial_fib( long n ) {
     if( n<2 )

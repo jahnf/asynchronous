@@ -27,7 +27,7 @@ using namespace boost::asynchronous::test;
 namespace
 {
 typedef boost::asynchronous::any_loggable servant_job;
-typedef std::map<std::string,std::list<boost::asynchronous::diagnostic_item> > diag_type;
+typedef std::map<std::string,std::vector<boost::asynchronous::diagnostic_item> > diag_type;
 typedef std::vector<std::pair<std::string,boost::asynchronous::diagnostic_item>> current_type;
 typedef std::pair<std::string,boost::asynchronous::diagnostic_item> one_current_type;
 

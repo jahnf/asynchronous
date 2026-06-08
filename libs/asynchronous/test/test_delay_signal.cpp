@@ -68,7 +68,7 @@ template < typename T >
 class parallel_for_each
 {
   using diagnostic_item = boost::asynchronous::diagnostic_item;
-  using diagnostics_type = std::map<std::string,std::list<boost::asynchronous::diagnostic_item>>;
+  using diagnostics_type = std::map<std::string,std::vector<boost::asynchronous::diagnostic_item>>;
 
   template < typename SlotIterator
          , typename Job = BOOST_ASYNCHRONOUS_DEFAULT_JOB

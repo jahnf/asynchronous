@@ -12,7 +12,6 @@
 
 #include <memory>
 #include <vector>
-#include <list>
 
 #include <memory>
 #include <boost/thread/mutex.hpp>
@@ -30,7 +29,7 @@ private:
     struct bucket_type
     {
         typedef std::pair<Key,Value> bucket_value;
-        typedef std::list<bucket_value> bucket_data;
+        typedef std::vector<bucket_value> bucket_data;
         typedef typename bucket_data::iterator bucket_iterator;
         bucket_data data;
         mutable boost::shared_mutex mutex;
@@ -123,7 +122,7 @@ public:
         return res;
     }
     // TODO chose returned sequence container
-    std::map<Key,std::list<Value> > get_map() const
+    std::map<Key,std::vector<Value> > get_map() const
     {
         std::vector<boost::unique_lock<boost::shared_mutex> > locks;
         for(unsigned i=0;i<m_buckets.size();++i)
@@ -131,7 +130,7 @@ public:
             locks.push_back(
                         boost::unique_lock<boost::shared_mutex>((*m_buckets[i]).mutex));
         }
-        std::map<Key,std::list<Value> > res;
+        std::map<Key,std::vector<Value> > res;
         for(unsigned i=0;i<m_buckets.size();++i)
         {
             for(typename bucket_type::bucket_iterator it=(*m_buckets[i]).data.begin();

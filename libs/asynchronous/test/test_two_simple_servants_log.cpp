@@ -19,7 +19,7 @@ using namespace boost::asynchronous::test;
 namespace
 {
 typedef boost::asynchronous::any_loggable servant_job;
-typedef std::map<std::string,std::list<boost::asynchronous::diagnostic_item> > diag_type;
+typedef std::map<std::string,std::vector<boost::asynchronous::diagnostic_item> > diag_type;
 
 // main thread id
 boost::thread::id main_thread_id;

@@ -81,7 +81,7 @@ struct DummyJob
     }
 };
 typedef boost::asynchronous::any_loggable servant_job;
-typedef std::map<std::string,std::list<boost::asynchronous::diagnostic_item> > diag_type;
+typedef std::map<std::string,std::vector<boost::asynchronous::diagnostic_item> > diag_type;
 struct PostJob
 {
     PostJob(std::shared_ptr<std::promise<void> > done,std::string const& name=""):m_done(done),m_name(name){}

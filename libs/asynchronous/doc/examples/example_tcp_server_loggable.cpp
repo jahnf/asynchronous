@@ -21,7 +21,7 @@ using namespace std;
 namespace
 {
 typedef boost::asynchronous::any_loggable log_servant_job;
-typedef std::map<std::string,std::list<boost::asynchronous::diagnostic_item> > diag_type;
+typedef std::map<std::string,std::vector<boost::asynchronous::diagnostic_item> > diag_type;
 
 // notice how the worker pool has a different job type
 struct Servant : boost::asynchronous::trackable_servant<log_servant_job,log_servant_job>
