@@ -1320,7 +1320,8 @@ inline void format(document & doc, std::size_t /* index */, std::string const& s
 
     // Process each item (but do not add them yet) to generate cell values and calculate the maximum
     std::vector<simple_diagnostic_item> processed;
-    for (auto & item : data) {
+    processed.reserve(data.size());
+    for (auto const& item : data) {
         if (item.first.empty()) continue;
 
         // Get times
@@ -1339,7 +1340,7 @@ inline void format(document & doc, std::size_t /* index */, std::string const& s
 
     // Write HTML
     for (std::size_t id = 0; id < processed.size(); ++id) {
-        auto & item = processed[id];
+        auto const& item = processed[id];
 
         // Maximum values have differing font color
         bool is_scheduling_maximum = (item.scheduling == max_scheduling);
@@ -1485,11 +1486,11 @@ public:
     // Formatting
 
     virtual std::string format(std::size_t count,
-                               std::vector<std::string> && names,
-                               std::vector<std::vector<std::size_t>> && queue_sizes,
-                               std::vector<scheduler_diagnostics::current_type> && running,
-                               std::vector<Current> && current,
-                               std::vector<All> && all) override {
+                               std::vector<std::string> const& names,
+                               std::vector<std::vector<std::size_t>> const& queue_sizes,
+                               std::vector<scheduler_diagnostics::current_type> const& running,
+                               std::vector<Current> const& current,
+                               std::vector<All> const& all) override {
         document doc(m_params);
 
         for (std::size_t index = 0; index < count; ++index) {

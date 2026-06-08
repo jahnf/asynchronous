@@ -13,7 +13,6 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <list>
 #include <cstddef>
 
 #include <boost/pointee.hpp>
@@ -57,9 +56,11 @@ struct any_scheduler_impl_concept :
     boost::asynchronous::has_interruptible_add<boost::asynchronous::any_interruptible(JOB const&, std::size_t),
                                             boost::type_erasure::_a>,
 #endif
-    boost::asynchronous::has_get_diagnostics<std::map<std::string,std::list<DiagItem> >(),const boost::type_erasure::_a>,
+    boost::asynchronous::has_get_diagnostics<std::map<std::string,std::vector<DiagItem> >(),const boost::type_erasure::_a>,
+    boost::asynchronous::has_get_and_clear_diagnostics<std::map<std::string, std::vector<DiagItem> >(), boost::type_erasure::_a>,
 #ifndef BOOST_NO_RVALUE_REFERENCES
-    boost::asynchronous::has_get_diagnostics<std::map<std::string,std::list<DiagItem> >(std::size_t),const boost::type_erasure::_a>,
+    boost::asynchronous::has_get_diagnostics<std::map<std::string,std::vector<DiagItem> >(std::size_t),const boost::type_erasure::_a>,
+    boost::asynchronous::has_get_and_clear_diagnostics<std::map<std::string, std::vector<DiagItem> >(std::size_t), boost::type_erasure::_a>,
 #endif
     boost::asynchronous::has_get_worker<boost::asynchronous::any_joinable(),const boost::type_erasure::_a>,
     boost::asynchronous::has_thread_ids<std::vector<boost::thread::id>(), const boost::type_erasure::_a>,

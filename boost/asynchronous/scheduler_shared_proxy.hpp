@@ -132,6 +132,13 @@ public:
     {
         m_scheduler->clear_diagnostics();
     }
+    boost::asynchronous::scheduler_diagnostics
+    get_and_clear_diagnostics(std::size_t pos = 0)
+    {
+        auto res = m_scheduler->get_diagnostics(pos);
+        m_scheduler->clear_diagnostics();
+        return res;
+    }
     boost::asynchronous::any_weak_scheduler<job_type> get_weak_scheduler() const
     {
         boost::asynchronous::detail::lockable_weak_scheduler<scheduler_type> w(m_scheduler);
@@ -318,6 +325,18 @@ public:
     void clear_diagnostics()
     {
         m_impl->clear_diagnostics();
+    }
+
+    /*!
+     * \brief returns the diagnostics for this scheduler, clears after
+     * \return a scheduler_diagnostics containing totals or current diagnostics
+     */
+    boost::asynchronous::scheduler_diagnostics
+    get_and_clear_diagnostics(std::size_t pos = 0)
+    {
+        auto res = m_impl->get_diagnostics(pos);
+        clear_diagnostics();
+        return res;
     }
 
     /*!

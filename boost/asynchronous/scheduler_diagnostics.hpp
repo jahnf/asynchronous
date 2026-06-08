@@ -11,7 +11,7 @@
 #define BOOST_ASYNCHRONOUS_SCHEDULER_DIAGNOSTICS_HPP
 
 #include <map>
-#include <list>
+#include <vector>
 #include <boost/asynchronous/diagnostics/diagnostic_item.hpp>
 #include <boost/asynchronous/job_traits.hpp>
 
@@ -19,7 +19,7 @@ namespace boost { namespace asynchronous
 {
 struct scheduler_diagnostics
 {
-    typedef std::map<std::string,std::list<boost::asynchronous::diagnostic_item>> total_type;
+    typedef std::map<std::string,std::vector<boost::asynchronous::diagnostic_item>> total_type;
     typedef std::vector<std::pair<std::string, boost::asynchronous::diagnostic_item>> current_type;
 
     scheduler_diagnostics(total_type const& t, current_type const& c)
@@ -39,7 +39,7 @@ struct scheduler_diagnostics
     {
         return m_current;
     }
-    void merge(scheduler_diagnostics other)
+    void merge(scheduler_diagnostics const& other)
     {
         for (auto const& diag : other.m_totals)
         {

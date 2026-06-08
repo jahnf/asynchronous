@@ -49,10 +49,12 @@ BOOST_TYPE_ERASURE_MEMBER((boost)(asynchronous)(has_interruptible_post), interru
 BOOST_TYPE_ERASURE_MEMBER((boost)(asynchronous)(has_add), add);
 BOOST_TYPE_ERASURE_MEMBER((boost)(asynchronous)(has_interruptible_add), interruptible_add);
 BOOST_TYPE_ERASURE_MEMBER((boost)(asynchronous)(has_get_diagnostics), get_diagnostics);
+BOOST_TYPE_ERASURE_MEMBER((boost)(asynchronous)(has_get_and_clear_diagnostics), get_and_clear_diagnostics);
 #else
 BOOST_TYPE_ERASURE_MEMBER((boost)(asynchronous)(has_add), add,2);
 BOOST_TYPE_ERASURE_MEMBER((boost)(asynchronous)(has_interruptible_add), interruptible_add,2);
 BOOST_TYPE_ERASURE_MEMBER((boost)(asynchronous)(has_get_diagnostics), get_diagnostics, 0);
+BOOST_TYPE_ERASURE_MEMBER((boost)(asynchronous)(has_get_and_clear_diagnostics), get_and_clear_diagnostics);
 
 // no variadic macro, we use concept_interface directly
 // post

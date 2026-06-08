@@ -88,8 +88,12 @@ struct any_shared_scheduler_proxy_concept:
 #ifndef BOOST_NO_RVALUE_REFERENCES
     boost::asynchronous::has_get_diagnostics<boost::asynchronous::scheduler_diagnostics(std::size_t),
                                           const boost::type_erasure::_a>,
+    boost::asynchronous::has_get_and_clear_diagnostics<boost::asynchronous::scheduler_diagnostics(std::size_t),
+                                          const boost::type_erasure::_a>,
 #endif
     boost::asynchronous::has_get_diagnostics<boost::asynchronous::scheduler_diagnostics(),
+                                          const boost::type_erasure::_a>,
+    boost::asynchronous::has_get_and_clear_diagnostics<boost::asynchronous::scheduler_diagnostics(),
                                           const boost::type_erasure::_a>,
     boost::asynchronous::has_get_internal_scheduler_aspect<boost::asynchronous::internal_scheduler_aspect<JOB>(), boost::type_erasure::_a>,
     boost::asynchronous::has_set_name<void(std::string const&), boost::type_erasure::_a>,
@@ -173,6 +177,12 @@ public:
     void clear_diagnostics()
     {
         (*my_ptr).clear_diagnostics();
+    }
+    boost::asynchronous::scheduler_diagnostics get_and_clear_diagnostics(std::size_t prio = 0)
+    {
+        auto res = (*my_ptr).get_diagnostics(prio);
+        (*my_ptr).clear_diagnostics();
+        return res;
     }
     boost::asynchronous::internal_scheduler_aspect<JOB> get_internal_scheduler_aspect() const
     {
@@ -303,6 +313,12 @@ struct any_shared_scheduler_proxy_concept
      * \brief reset the diagnostics
      */
     virtual void clear_diagnostics() =0;
+
+    /*!
+     * \brief returns the diagnostics for this scheduler, clears after
+     * \return a scheduler_diagnostics containing totals or current diagnostics
+     */
+    virtual boost::asynchronous::scheduler_diagnostics get_and_clear_diagnostics(std::size_t = 0) = 0;
 
     /*!
      * \brief returns a reduced scheduler interface for internal needs
@@ -469,6 +485,15 @@ public:
     void clear_diagnostics()
     {
         (*my_ptr).clear_diagnostics();
+    }
+
+    /*!
+     * \brief returns the diagnostics for this scheduler, clears after
+     * \return a scheduler_diagnostics containing totals or current diagnostics
+     */
+    boost::asynchronous::scheduler_diagnostics get_and_clear_diagnostics(std::size_t prio = 0)
+    {
+        return (*my_ptr).get_and_clear_diagnostics(prio);
     }
 
     /*!

@@ -87,6 +87,7 @@ struct any_shared_scheduler_concept :
                                       const boost::type_erasure::_a>,
 #endif
     boost::asynchronous::has_clear_diagnostics<void(), boost::type_erasure::_a>,
+    boost::asynchronous::has_get_and_clear_diagnostics<void(), boost::type_erasure::_a>,
     boost::asynchronous::has_get_queue_size<std::vector<std::size_t>(), const boost::type_erasure::_a>,
     boost::asynchronous::has_get_diagnostics<boost::asynchronous::scheduler_diagnostics(),
                                           const boost::type_erasure::_a>,
@@ -194,6 +195,13 @@ struct any_shared_scheduler_concept
         boost::asynchronous::subscription::unsubscribe<Event, Topic>(token.token, this->get_uuid(), topic);
     }
 
+    boost::asynchronous::scheduler_diagnostics get_and_clear_diagnostics(std::size_t = 0)
+    {
+        auto diag = get_diagnostics();
+        clear_diagnostics();
+        return diag;
+    }
+
     std::shared_ptr<boost::asynchronous::subscription_token>   m_token = std::make_shared<boost::asynchronous::subscription_token>(boost::asynchronous::subscription_token{ 0 });
     boost::uuids::uuid m_uuid = boost::uuids::random_generator()();
 };
@@ -292,6 +300,13 @@ public:
     void clear_diagnostics()
     {
         (*my_ptr).clear_diagnostics();
+    }
+    boost::asynchronous::scheduler_diagnostics get_and_clear_diagnostics()
+    {
+        //return (*my_ptr).get_and_clear_diagnostics();
+        auto diag = get_diagnostics();
+        clear_diagnostics();
+        return diag;
     }
     void register_diagnostics_functor(std::function<void(boost::asynchronous::scheduler_diagnostics)> fct,
                                       boost::asynchronous::register_diagnostics_type t =

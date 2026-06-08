@@ -23,7 +23,7 @@ namespace boost { namespace asynchronous {
 struct scheduler_interface {
     std::function<boost::asynchronous::scheduler_diagnostics()> get_diagnostics;
     std::function<std::vector<std::size_t>()> get_queue_sizes;
-    std::function<boost::asynchronous::scheduler_diagnostics()> clear;
+    std::function<boost::asynchronous::scheduler_diagnostics()> get_and_clear;
     std::string name;
 
     template <typename Job>
@@ -48,18 +48,16 @@ struct scheduler_interface {
             return std::vector<std::size_t>();
         };
 
-        // Clear diagnostics
-        clear = [weak_scheduler]() -> scheduler_diagnostics
-        {
-            auto locked_scheduler = weak_scheduler.lock();
-            if (locked_scheduler.is_valid()) {
-                //TODO: integrate this into clear_diagnostics to reduce the chances of diagnostics being lost inbetween
-                scheduler_diagnostics diagnostics = std::forward<scheduler_diagnostics>(locked_scheduler.get_diagnostics());
-                locked_scheduler.clear_diagnostics();
-                return diagnostics;
-            }
-            return scheduler_diagnostics();
-        };
+        // Get and Clear diagnostics
+        get_and_clear = [weak_scheduler]() -> scheduler_diagnostics
+            {
+                auto locked_scheduler = weak_scheduler.lock();
+                if (locked_scheduler.is_valid()) {
+                    scheduler_diagnostics diagnostics{ locked_scheduler.get_and_clear_diagnostics() };
+                    return diagnostics;
+                }
+                return scheduler_diagnostics();
+            };
 
         // Get name
         name = name_;
