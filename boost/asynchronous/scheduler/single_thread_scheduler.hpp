@@ -238,6 +238,7 @@ public:
                 boost::asynchronous::job_traits<typename Q::job_type>::add_diagnostic(job,diagnostics.get());
                 boost::asynchronous::job_traits<typename Q::job_type>::reset_current_diagnostic(0,diagnostics.get());
             }
+            throw;
         }
         return popped;
     }
@@ -292,9 +293,6 @@ public:
             catch(boost::thread_interrupted&)
             {
                 // task interrupted, no problem, just continue
-            }
-            catch(std::exception&)
-            {
             }
         }
     }

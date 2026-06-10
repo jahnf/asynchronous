@@ -173,7 +173,7 @@ public:
         if (pos==0)
         {
             std::map<std::string,
-                     std::list<typename boost::asynchronous::job_traits<job_type>::diagnostic_item_type > > res;
+                     std::vector<typename boost::asynchronous::job_traits<job_type>::diagnostic_item_type > > res;
 
             std::vector<std::pair<std::string,typename boost::asynchronous::job_traits<Job>::diagnostic_item_type>> res2;
             for (typename std::vector<subpool_type>::const_iterator it = m_subpools.begin(); it != m_subpools.end();++it)
