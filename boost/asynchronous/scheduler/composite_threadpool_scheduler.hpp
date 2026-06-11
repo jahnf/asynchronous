@@ -198,6 +198,13 @@ public:
             (*it).clear_diagnostics();
         }
     }
+    boost::asynchronous::scheduler_diagnostics
+    get_and_clear_diagnostics(std::size_t pos = 0)
+    {
+        auto res = get_diagnostics(pos);
+        clear_diagnostics();
+        return res;
+    }
     void register_diagnostics_functor(std::function<void(boost::asynchronous::scheduler_diagnostics)> ,
                                       boost::asynchronous::register_diagnostics_type =
                                                     boost::asynchronous::register_diagnostics_type())

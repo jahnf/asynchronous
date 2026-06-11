@@ -315,6 +315,12 @@ struct any_shared_scheduler_proxy_concept
     virtual void clear_diagnostics() =0;
 
     /*!
+     * \brief returns the diagnostics for this scheduler, clears after
+     * \return a scheduler_diagnostics containing totals or current diagnostics
+     */
+    virtual boost::asynchronous::scheduler_diagnostics get_and_clear_diagnostics(std::size_t = 0) = 0;
+
+    /*!
      * \brief returns a reduced scheduler interface for internal needs
      */
     virtual boost::asynchronous::internal_scheduler_aspect<JOB> get_internal_scheduler_aspect() =0;
